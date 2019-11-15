@@ -1,68 +1,42 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
+## Dev Connector Application
 
 In the project directory, you can run:
 
-### `npm start`
+### `Node Explanation`
+
+#### An explanation of a Rest call on the backend
+
+This is the main js file for the Node server backend.
+
+    // routes
+    const users = require("./routes/api/users");
+    const profile = require("./routes/api/profile");
+    const posts = require("./routes/api/posts");
+
+This goes to the routes folder, and in there we have a users, profile, and posts js file. Each of these have http requests, which means when you hit the endpoints, they invoke the logic within each request. Let's take post.js as an example.
+
+First off, we are using MongoDB, so we have created models, which will be explained below in another section.
+
+    // @route  GET api/posts/
+    // @desc   Get posts
+    // @access Public
+    router.get("/", (req, res) => {
+    Post.find()
+        .sort({ date: -1 })
+        .then(posts => {
+        res.json(posts);
+        })
+        .catch(err =>
+        res.status(404).json({ nopostsfound: "No posts found with that ID" })
+        );
+    });
+
+In this get request, we assign the url '/', which is prepended in the server.js file. As the second argument, it takes a callback function for the request and response. Post.find() asks MongoDB using the mongoose library to find all Post objects. Then we sort them in descending order with .sort({ date: -1 }). Since this is Promise-based, on success of this call, the .then(....) section takes the result of finding all objects in the database, and we simply send the object back in the response. If there were no posts found, then it goes to the .catch(...) section and sends a 404 status back.
+
+This is essentially how all of them work. We find something from the database using similar syntax, for each object(s) we find, some logic is performed and we send something back to the server in a response.
 
 Runs the app in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.<br />
 You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
